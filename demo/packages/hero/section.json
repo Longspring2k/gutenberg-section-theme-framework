@@ -1,0 +1,9 @@
+{
+  "name": "hero",
+  "title": "Hero",
+  "render": "render.php",
+  "attributes": {
+    "heading": "string",
+    "featured": "bool"
+  }
+}

@@ -1,49 +1,71 @@
 # Gutenberg Section Theme Framework
 
-A section-based theme architecture that keeps page composition inside the native WordPress editor while separating rendering infrastructure from presentation code.
+A confidentiality-safe technical showcase of a section-oriented WordPress/Gutenberg architecture. This repository includes a **newly authored, portable PHP mechanism demo** alongside the narrative about original private work.
 
-**Technical showcase · Documentation only · Anonymized**
+**Anonymized showcase · Original educational demo · No client source or assets**
 
-WordPress | PHP | Gutenberg | JavaScript | CSS | Vite
+PHP 8.3 | JSON metadata | server rendering | reusable variation lifecycle
 
-## Engineering problem
+## What is here
 
-Reusable sections need to stay editable without making every layout change a theme-code change. At the same time, shared content, legacy blocks and form integrations must coexist without turning the editor into a second frontend application.
+The demo models deterministic discovery of checked-in section packages from strict JSON metadata and reusable variation data with link, local override, update, and detach behavior. It deliberately does **not** pretend to be WordPress: there are no WordPress stubs, fake editor screens, or invented integration APIs.
 
-## Implementation scope
+## Quick start
 
-- Organized section packages around block.json metadata, editor behavior and server-side rendering.
-- Separated stable runtime code from the design layer and discovered section packages without a central hard-coded registry.
-- Implemented reusable section variations with save, reuse, switch and detach workflows backed by native WordPress records.
-- Kept legacy block compatibility at the boundary rather than making the current rendering path depend on the legacy field system.
-- Integrated existing form providers and added structure, runtime, editor-safety and visual-contract checks.
+There are no dependencies or install step. PHP 8.3 is available in the verified environment.
 
-## Architecture at a glance
-
-The following is an illustrative technical flow, not a client screenshot or a deployment topology.
-
-```mermaid
-flowchart TD
-    N0["Native block editor"]
-    N1["Section metadata and attributes"]
-    N0 --> N1
-    N2["PHP render layer"]
-    N1 --> N2
-    N3["Shared theme assets"]
-    N2 --> N3
-    N4["Public page"]
-    N3 --> N4
+```bash
+php tests/run.php
+php demo/run.php
 ```
 
-## Evidence and delivery boundary
+The current suite ends with `8 passed, 0 failed`. The demo prints discovered package names, one intentional invalid-metadata notice, and rendered HTML showing a linked update, detached snapshot, and escaped markup. A filter that matches no tests exits with an error rather than reporting a false green result.
 
-Packaged implementation; this publication documents architecture, not a newly verified live deployment.
+## Concrete data flow
 
-The inspected implementation includes a Vite build and separate structure, runtime, editor-safety, image and visual-contract checks. This showcase does not report a new execution of those private suites.
+```text
+demo/packages/*/section.json
+        │ strict parse + validation
+        ▼
+SectionRegistry ── deterministic order ──► SectionPackage
+        │                                      │
+        ▼                                 validated attrs
+VariationStore ── link/override/detach ──► render.php ──► escaped HTML
+```
 
-## Read more
+Example: `launch` holds shared attributes. `home-hero` remains linked, so an update changes its resolved data. `campaign-hero` overrides only its heading. Detaching it captures the fully resolved data; later shared updates do not affect that snapshot.
 
-- [Engineering decisions](docs/engineering.md)
-- [Scope and evidence boundaries](docs/scope.md)
+## Demonstrated guarantees
 
-> This repository describes verified implementation work at a technical level. Original source, identities, business data and visual assets are intentionally omitted. It is not an installable application or a claim that the original private implementation is open source.
+- Only immediate child directories with `section.json` are discovered.
+- Packages sort by section name; invalid packages are skipped with explicit errors.
+- Duplicate names, unknown metadata fields, and arbitrary metadata-selected PHP paths are rejected.
+- Render attributes must match declared fields and scalar types exactly.
+- Invalid attribute schemas are rejected during discovery; renderer exceptions discard partial output and restore the caller's output buffer.
+- Text examples use HTML escaping, including script-like input.
+- Linked instances see updates; overrides win; detach freezes a snapshot.
+- Missing variation references fail explicitly.
+- Resolving or editing a returned value does not mutate the instance description.
+
+## Code map
+
+- `demo/src/SectionRegistry.php` — bounded discovery and metadata contract.
+- `demo/src/SectionPackage.php` — validation-to-render boundary.
+- `demo/src/AttributeValidator.php` — exact fields and types.
+- `demo/src/Escaper.php` — HTML text escaping.
+- `demo/src/VariationStore.php` — in-memory reuse lifecycle.
+- `demo/packages/` — synthetic packages and one invalid fixture.
+- `demo/run.php` — CLI walkthrough.
+- `tests/run.php` — dependency-free behavior tests.
+- `docs/engineering.md` — contracts, lifecycle, errors, and WordPress boundaries.
+- `docs/scope.md` — evidence and trust boundaries.
+
+## Original work versus this demo
+
+The original work informed the architectural narrative: native editor composition, self-contained section packages, server rendering, reusable variations, compatibility boundaries, and integration checks. That source remains private.
+
+The PHP under `demo/` and `tests/` is new synthetic educational code. Passing these tests verifies this portable demo only; it does not retroactively verify the private implementation, a live site, or WordPress/editor behavior.
+
+## Limitations
+
+This is not a plugin or theme and does not demonstrate native block registration, editor UI, persistence, permissions, concurrency, cache invalidation, migrations, asset builds, integrations, or production deployment. See [engineering decisions](docs/engineering.md) and [scope boundaries](docs/scope.md).

@@ -1,0 +1,9 @@
+{
+  "name": "callout",
+  "title": "Callout",
+  "render": "render.php",
+  "attributes": {
+    "body": "string",
+    "priority": "int"
+  }
+}

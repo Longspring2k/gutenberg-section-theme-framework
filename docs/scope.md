@@ -1,22 +1,40 @@
 # Scope and evidence boundaries
 
-## Documented state
+## Two distinct bodies of work
 
-Packaged implementation; this publication documents architecture, not a newly verified live deployment.
+This repository describes an original private Gutenberg/theme implementation at an architectural level and contains a separate newly authored portable PHP demo.
 
-## Evidence basis
+The narrative is based on retained private evidence and supports architectural claims, not a fresh claim that the original system was executed, deployed, or verified for this publication. The public PHP uses synthetic names and content; its local results apply only to this demo.
 
-The inspected implementation includes a Vite build and separate structure, runtime, editor-safety, image and visual-contract checks. This showcase does not report a new execution of those private suites.
+## Included publicly
 
-The public narrative was prepared against retained implementation and verification artifacts. Those private references are not redistributed. Source inspection, recorded test results, staging observations and production deployment are different levels of evidence; none is silently substituted for another.
+- newly written English documentation;
+- original educational PHP for discovery, strict attributes, escaping, and variation behavior;
+- synthetic JSON metadata and renderer fixtures;
+- a dependency-free test runner and CLI walkthrough.
 
-## Not claimed or distributed
+## Intentionally excluded
 
-- No original theme package, form configuration or site content is distributed.
-- Compatibility handling is implementation-specific, not a promise that any legacy block can be migrated automatically.
+- original client code, assets, identifiers, domains, endpoints, filenames, paths, evidence, or inherited history;
+- private build/form configuration, content, screenshots, and deployment scripts;
+- metrics, endorsements, or claims of whole-site authorship.
 
-## Public repository boundary
+## Demonstrated
 
-Only newly written technical documentation and illustrative diagrams are included. There are no original application source files, datasets, screenshots, deployment scripts, credentials or inherited Git history. No business-performance figures or customer endorsements are asserted.
+`php tests/run.php` exercises the portable contracts. `php demo/run.php` exercises discovery and rendering with synthetic data. PHP syntax checks cover included PHP files.
 
-The repository is intended for technical review of the engineering approach. It makes no grant of rights to the original private implementation or third-party dependencies.
+## Not demonstrated
+
+- native WordPress/Gutenberg registration or editor behavior;
+- serialization, autosave, revisions, undo/redo, or persistence;
+- authentication, permissions, REST, capabilities, or nonces;
+- concurrency, locking, transactions, caches, or migrations;
+- production visual/accessibility behavior, forms, legacy migration, hosting, release automation, observability, or deployment.
+
+No WordPress stub is used as evidence for those capabilities.
+
+## Trust boundary
+
+The package root is trusted checked-in application code. Discovery is limited to immediate children and metadata cannot select an arbitrary include path. This reduces accidental path expansion; it does not make checked-in PHP safe from a malicious contributor.
+
+Review the demo as an executable explanation of mechanisms and the original-work narrative as an anonymized description. A passing public suite is not a passing private WordPress suite or proof of production behavior.
